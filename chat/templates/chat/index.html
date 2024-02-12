@@ -1,7 +1,8 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="{% static '' %}">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
         <title>
             Chatup
         </title>
@@ -13,9 +14,48 @@
             </div>
             <div class="chat-body">
                 <div class="msg">
-
+                    <div class="msg-wrap">
+                        <div class="msg-sender">
+                            <h5>Godwin</h5>
+                        </div>
+                        <div class="msg-txt">
+                            
+                                Hello! How are you doing today?
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="msg">
+                    <div class="msg-wrap">
+                        <div class="msg-sender">
+                            <h5>Grace</h5>
+                        </div>
+                        <div class="msg-txt">
+                            
+                                Hello! How are you doing today?
+                        
+                        </div>
+                    </div>
+                </div>
+                <div class="msg">
+                    <div class="msg-wrap">
+                        <div class="msg-sender">
+                            <h5>Grace</h5>
+                        </div>
+                        <div class="msg-txt">
+                            
+                                Hello! How are you doing today?
+                        
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+                <div class="input-wrap">
+                    <input class="input-txt" type="text" placeholder="Chatup..">
+                    <button class="send-btn" type="submit">Send</button>
+                </div>
+            
         </div>
     </body>
 </html>

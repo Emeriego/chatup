@@ -1,0 +1,126 @@
+*{
+    box-sizing: border-box;
+}
+.container{
+    display: flex;
+    width: 450px;
+    height: auto;
+    background-color: dimgrey;
+    margin-inline: auto;
+    min-height: 300px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 10px;
+    color: beige;
+    padding: 10px;
+    gap: 5px;
+}
+.header{
+    width: 90%;
+    height: 40px;
+    /* background-color: rgb(54, 54, 48); */
+    color: rgb(253, 253, 253);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 10px;
+
+}
+.chat-body{
+    width: 90%;
+    height: auto;
+    /* background-color: beige; */
+    color: dimgray;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+}
+.msg{
+    width: 100%;
+    height: auto;
+    border-radius: 0 10px 0 10px;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: row;
+
+
+
+}
+.msg-wrap{
+    width: auto;
+    height: auto;
+    background: rgb(212, 212, 205);
+    border-radius: 0 15px 0 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    padding: 10px;
+
+    /* background-color: blue; */
+}
+.chat-body > :nth-child(odd){
+    /* background-color: red; */
+    justify-content: flex-start;
+
+}
+.chat-body > :nth-child(odd) .msg-wrap{
+    /* background-color: red; */
+    align-items: flex-start;
+
+}
+.chat-body > :nth-child(even){
+    /* background-color: aqua; */
+    justify-content: flex-end;
+}
+.chat-body > :nth-child(even) .msg-wrap{
+    /* background-color: red; */
+    align-items: flex-end;
+
+}
+
+.input-wrap{
+    width: 100%;
+    height: 60px;
+    background-color: beige;
+    color: dimgray;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    position: relative;
+
+
+}
+.input-txt{
+    width: 100%;
+    height: 90%;
+    border-radius: 10px;
+    margin: 0;
+    padding: 10px;
+    border: none;
+    background-color: inherit;
+
+
+}
+.input-txt:focus{
+    border: 0;
+}
+.send-btn{
+    height: 90%;
+    width: 60px;
+    border-radius: 10px;
+    margin: 0;
+    padding: 5px;
+    border: none;
+    position: absolute;
+    right: 3px;
+    background-color: rgb(114, 163, 39);
+    color: azure;
+}
