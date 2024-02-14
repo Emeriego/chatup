@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <title>
+            Chatup
+        </title>
+    </head>
+    <body>
+        <div class="container">
+            {% if user.is_authenticated %}
+
+            <div class="header">
+                <h3>Create Room</h3>
+                <div class="logout">
+                    <a href="{% url 'logout' %}">logout</a>
+                </div>
+            </div>
+            
+            <form action="{% url 'room' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-wrap2">
+                    <input class="input-txt2" name="name" type="text" placeholder="create or enter room..">
+                    <button class="send-btn2" type="submit">Enter Room</button>
+                </div>
+            </form>
+            
+            {% else %}
+            <div class="header">
+                <h3>Login</h3>
+            </div>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-wrap2">
+                    <input class="input-txt2" name = "username" type="text" placeholder="Username">
+                    <input class="input-txt2" name="password" type="password" placeholder="Password">
+                    <button class="send-btn2" type="submit">Login</button>
+                </div>
+            </form>
+            
+            {% endif %}
+        </div>
+    </body>
+</html>

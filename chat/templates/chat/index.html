@@ -11,50 +11,39 @@
         <div class="container">
             <div class="header">
                 <h3>Welcome</h3>
+                <div class="logout">
+                    <a href="{% url 'logout' %}">logout</a>
+                </div>
             </div>
+           
             <div class="chat-body">
+                {% for m in msgs %}
                 <div class="msg">
                     <div class="msg-wrap">
                         <div class="msg-sender">
-                            <h5>Godwin</h5>
+                            <h5>{{ m.sender }}</h5>
                         </div>
                         <div class="msg-txt">
-                            
-                                Hello! How are you doing today?
-                            
+                            {{ m.msg }}                            
                         </div>
                     </div>
                 </div>
-                <div class="msg">
-                    <div class="msg-wrap">
-                        <div class="msg-sender">
-                            <h5>Grace</h5>
-                        </div>
-                        <div class="msg-txt">
-                            
-                                Hello! How are you doing today?
-                        
-                        </div>
-                    </div>
-                </div>
-                <div class="msg">
-                    <div class="msg-wrap">
-                        <div class="msg-sender">
-                            <h5>Grace</h5>
-                        </div>
-                        <div class="msg-txt">
-                            
-                                Hello! How are you doing today?
-                        
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+                
+               
             </div>
-            
+            <form action="{% url 'messages' name=room  %}" method="POST">
+                {% csrf_token %}
                 <div class="input-wrap">
-                    <input class="input-txt" type="text" placeholder="Chatup..">
+                    <input class="input-txt" type="text" placeholder="Chatup.." name="msg">
+                    <input class="input-txt" type="hidden" name="sender" value="{{ username }}">
+                    <input class="input-txt" type="hidden" name="sent_to" value="{{  room }}">
+                    <input class="input-txt" type="hidden" name="room" value="{{ room }}">
+
                     <button class="send-btn" type="submit">Send</button>
                 </div>
+            </form>
+                
             
         </div>
     </body>
