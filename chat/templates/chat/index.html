@@ -3,9 +3,11 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <title>
             Chatup
         </title>
+
     </head>
     <body>
         <div class="container">
@@ -16,8 +18,8 @@
                 </div>
             </div>
            
-            <div class="chat-body">
-                {% for m in msgs %}
+            <div class="chat-body" id="chat_body">
+                <!-- {% for m in msgs %}
                 <div class="msg">
                     <div class="msg-wrap">
                         <div class="msg-sender">
@@ -28,23 +30,86 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                {% endfor %} -->
                 
                
             </div>
-            <form action="{% url 'messages' name=room  %}" method="POST">
+            
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                // console.log(response.messages[key]);
+                alert("Im working");
+
+            // setInterval(function(){}, 1000);
+            setInterval(function(){
+                $.ajax({
+                    type:'GET',
+                    url: "/messages/" + "{{ name }}",
+                    dataType: "json",
+                    success: function(response){
+                        $('#chat_body').empty();
+                        for(var key in response.messages){
+                            console.log(response.messages[key]);
+                            // var temp = `<div class='contents'><b>${value.user}</b><p>${value.msg}</p><span class='sentat'>${value.sent_at}</span></div>`;
+                            var $div = $('<div>').addClass('msg');
+                            var $div2 = $('<div>').addClass('msg-wrap');
+                            var $div3 = $('<div>').addClass('msg_header');
+                            var $b = $('<b>').text(response.messages[key].sender);
+                            var $span = $('<span>').addClass('sentat').text(response.messages[key].sent_at);
+
+                            var $m = $('<p>').text(response.messages[key].msg);
+                            
+                            $div.append($div2);
+                            $div3.append($b, $span)
+                            $div2.append($div3, $m)
+                            $('#chat_body').append($div);
+                
+                    }
+                },
+                error: function(response){
+                    alert('An error has occured')
+                }
+            })
+        }, 1000);
+    })
+    </script>
+            <form id="form1">
                 {% csrf_token %}
                 <div class="input-wrap">
-                    <input class="input-txt" type="text" placeholder="Chatup.." name="msg">
-                    <input class="input-txt" type="hidden" name="sender" value="{{ username }}">
-                    <input class="input-txt" type="hidden" name="sent_to" value="{{  room }}">
-                    <input class="input-txt" type="hidden" name="room" value="{{ room }}">
+                    <input class="input-txt" type="text" placeholder="Chatup.." id="msg" name="msg">
+                    <input class="input-txt" type="hidden" id="sender" name="sender" value="{{ username }}" >
+                    <input class="input-txt" type="hidden" id="sent_to" name="sent_to" value="{{  name }}">
+                    <input class="input-txt" type="hidden" id="room" name="room" value="{{ name }}">
 
-                    <button class="send-btn" type="submit">Send</button>
+                    <button id="m" class="send-btn" type="submit">Send</button>
                 </div>
             </form>
                 
             
         </div>
+       
     </body>
+    <script type="text/javascript">
+        $(document).on('submit', '#form1', function (e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/send',
+                data: {
+                    msg: $('#msg').val(),
+                    sender: $('#sender').val(),
+                    sent_to: $('#sent_to').val(),
+                    room: $('#room').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(data){
+                    // alert(data)
+                }
+            });
+            document.getElementById('msg').value = '';
+        });
+
+        
+    </script>
 </html>

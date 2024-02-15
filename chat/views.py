@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Room, Message
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 
 # Create your views here.
 @login_required
@@ -17,33 +18,60 @@ def room(request):
         name = request.POST['name']
         user = request.user
         if Room.objects.filter(name=name):
-            return redirect('/messages/'+ name)
+            return render(request, 'chat/index.html', {
+                'name': name,
+                "username": user.username
+            })
         else:
             rm = Room.objects.create(name=name, created_by=user.username)
             rm.save()
-            return redirect('/messages/'+ name)
+            return render(request, 'chat/index.html', {
+                'name': name,
+                "username": user.username
 
+            })
     return render(request, "chat/index.html", {
     
     })
+# def room(request):
+#     if request.method == "POST":
+#         name = request.POST['name']
+#         user = request.user
+#         if Room.objects.filter(name=name):
+#             return redirect('/messages/'+ name)
+#         else:
+#             rm = Room.objects.create(name=name, created_by=user.username)
+#             rm.save()
+#             return redirect('/messages/'+ name)
+
+#     return render(request, "chat/index.html", {
+    
+#     })
 
 @login_required
 def messages(request, name):
-    if request.method == "POST":
-        room = request.POST['room']
-        msg = request.POST['msg']
-        sent_to = request.POST['sent_to']
-        sender = request.POST['sender']
-        m = Message.objects.create(sender=sender, room=room, msg=msg, sent_to=sent_to)
-        m.save()
-
     msgs = Message.objects.filter(room=name)
-    user = request.user
-    return render(request, "chat/index.html", {
-        "msgs": msgs,
-        "room": name,
-        "username": user.username
+    return JsonResponse({
+        'messages': list(msgs.values())
     })
+
+# @login_required
+# def messages(request, name):
+#     if request.method == "POST":
+#         room = request.POST['room']
+#         msg = request.POST['msg']
+#         sent_to = request.POST['sent_to']
+#         sender = request.POST['sender']
+#         m = Message.objects.create(sender=sender, room=room, msg=msg, sent_to=sent_to)
+#         m.save()
+
+#     msgs = Message.objects.filter(room=name)
+#     user = request.user
+#     return render(request, "chat/index.html", {
+#         "msgs": msgs,
+#         "room": name,
+#         "username": user.username
+#     })
 
 def login(request):
     if request.method == "POST":
@@ -59,3 +87,16 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('login')
+
+def loadMsg(request):
+    pass
+
+def send(request):
+    room = request.POST['room']
+    msg = request.POST['msg']
+    sent_to = request.POST['sent_to']
+    sender = request.POST['sender']
+
+    newMsg = Message.objects.create(sender=sender, msg=msg, room=room, sent_to=sent_to)
+    newMsg.save()
+    return HttpResponse('message sent successfully')
